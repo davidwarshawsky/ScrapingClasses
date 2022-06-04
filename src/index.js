@@ -34,7 +34,7 @@ class ClassSearch extends React.Component {
 
   async getCourseFromApi() {
     try {
-        const url = 'http://127.0.0.1:5000/' + this.state.subject + "/" + this.state.number + "/";
+        const url = 'https://flask-scraping-classes-api.b6eftcit5eg44.us-west-2.cs.amazonlightsail.com/' + this.state.subject + "/" + this.state.number + "/";
         let response = await fetch(url);
         let responseJsonified = await response.json();
         this.setState({responseJson: responseJsonified});
