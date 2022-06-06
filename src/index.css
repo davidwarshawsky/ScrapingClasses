@@ -7,14 +7,23 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+
+
 .form {
   padding-bottom: 20px;
   padding-top: 20px;
+  float: left;
 }
 
 table {
   border-collapse: collapse;
   width: 100%;
+}
+
+select {
+  height: 60px;
+  width: 80px;
+  font-size: 20px;
 }
 
 th,
