@@ -5,8 +5,13 @@ import './index.css';
 import reportWebVitals from './reportWebVitals';
 import { TextField, Button } from '@mui/material';
 // import { rootShouldForwardProp } from '@mui/material/styles/styled';
+// https://stackoverflow.com/questions/31758081/loading-json-data-from-local-file-into-react-js
+import valid_courses from './valid_courses.json'
 
 
+// function json_file_to_dict(filename) {
+//   var json_data = JSON.parse("json!./" + filename)
+// }
 
 
 
@@ -16,6 +21,8 @@ class ClassSearch extends React.Component {
     super(props);
     this.handleSubjectChange = this.handleSubjectChange.bind(this);
     this.handleNumberChange = this.handleNumberChange.bind(this);
+    this.handleSubjectClicked = this.handleSubjectClicked.bind(this);
+    this.handleNumberClicked = this.handleNumberClicked.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.getCourseFromApi = this.getCourseFromApi.bind(this);
     this.returnRows = this.returnRows.bind(this);
@@ -23,6 +30,8 @@ class ClassSearch extends React.Component {
     this.state = {
       subject: "",
       number: "",
+      subjectClicked:"CS",
+      numberClicked:"046A",
       clicked: false,
       responseJson: [],
       rows: [],
@@ -30,18 +39,19 @@ class ClassSearch extends React.Component {
       
     }
   }
-
+  
 
   async getCourseFromApi() {
     try {
-        const url = 'https://flask-scraping-classes-api.b6eftcit5eg44.us-west-2.cs.amazonlightsail.com/' + this.state.subject + "/" + this.state.number + "/";
-        let response = await fetch(url);
-        let responseJsonified = await response.json();
-        this.setState({responseJson: responseJsonified});
-        console.log(this.state.responseJson);
-        // console.log(typeof(this.state.responseJson));
-        this.returnRows(this.state.responseJson);
-        this.setState({valid:true});
+      const url = 'http://192.168.1.34:8080/' + this.state.subjectClicked + "/" + this.state.numberClicked + "/";
+      // const url = 'https://flask-scraping-classes-api.b6eftcit5eg44.us-west-2.cs.amazonlightsail.com/' + this.state.subject + "/" + this.state.number + "/";
+      let response = await fetch(url);
+      let responseJsonified = await response.json();
+      this.setState({responseJson: responseJsonified});
+      console.log(this.state.responseJson);
+      // console.log(typeof(this.state.responseJson));
+      this.returnRows(this.state.responseJson);
+      this.setState({valid:true});
     }catch(error) {
       console.error(error);
       this.setState({valid:false});
@@ -74,6 +84,13 @@ class ClassSearch extends React.Component {
     this.setState({number: event.target.value});
   }
 
+  handleSubjectClicked(event) {
+    this.setState({subjectClicked:event.target.value})
+  }
+  handleNumberClicked(event) {
+    this.setState({numberClicked:event.target.value})
+  }
+
   handleClick(){
     // this.setState({clicked: true});
     this.getCourseFromApi();
@@ -88,36 +105,44 @@ class ClassSearch extends React.Component {
     // console.log(this.state.rows.length);
     return (
       <div>
+        <h1>SJSU Transferable Classes Search</h1>
         <div className='form'>
-          <h1>SJSU Transferable Classes Search</h1>
           <div>
-          <h2>Subject</h2>
-          <TextField 
+          <div>
+            <h2>Subject</h2>
+            <select id="subject" onClick={this.handleSubjectClicked} defaultValue={"CS"} value={this.state.subjectClicked}>
+            {Object.keys(valid_courses).map((key,i) => ( <option key = {i}>{key}</option>))}
+            </select>
+          </div>
+          <div>
+            <h2>Number</h2>
+            <select id="number" onClick={this.handleNumberClicked} defaultValue="046A" value={this.state.numberClicked}>
+            {valid_courses[this.state.subjectClicked].map((number,i) => (<option key = {i}>{number}</option>))}
+            </select>
+          </div>
+        </div>
+          {/* <TextField 
             value = {this.state.subject}
             onChange={this.handleSubjectChange}
             type = "search"
             id="outlined-basic"
             variant="outlined"
-          />
-          </div>
-          <div>
-          <h2>Number</h2>
-          <TextField 
+          /> */}
+          {/* <TextField 
             value = {this.state.number}
             onChange={this.handleNumberChange} 
             type = "search"
             id="outlined-basic"
             variant="outlined"        
-          />
-          </div>
-          <Button variant="contained" onClick = {this.handleClick}>SUBMIT</Button>
+          /> */}
+        <Button variant="contained" onClick = {this.handleClick}>SUBMIT</Button>
+        </div>
           {/* valid input
               invalid input
               SHOWS UP AS INVALID UNTIL I  
               */}
           {/* {!this.state.valid && this.state.clicked && <p>{this.state.subject} {this.state.number} is invalid</p>} */}
-          <p>Please enter the subject abbreviation and class number exactly. Example: BIOL 0650 , ENGL 001B</p>
-        </div>
+          {/* <p>Please enter the subject abbreviation and class number exactly. Example: BIOL 0650 , ENGL 001B</p> */}
         <div>
         <table>
           <thead>
@@ -131,14 +156,16 @@ class ClassSearch extends React.Component {
           </tbody>
         </table>
       </div>
+      <footer>
+        <p>Author: David Warshawsky</p>
+        <p><a href="mailto:davidawarshawsky@gmail.com">davidawarshawsky@gmail.com</a></p>
+      </footer> 
      </div>
-    
-
     );
   }
 }
 
-
+// ToDo list 
 
 
 
