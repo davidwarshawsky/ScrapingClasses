@@ -12,6 +12,9 @@ title {
   border-bottom: 5px;
 }
 
+div#number{
+  margin-bottom: 20px;
+}
 
 
 .form {
@@ -67,6 +70,19 @@ footer {
   width: 100%;
   height: 10%;
   background-color: navy;
-  color: white;
+  color: #ffffff;
   text-align: center;
+}
+
+a {
+  color: white;
+}
+
+p:first-child{
+  float: left;
+  text-align: right;
+}
+p:second-child{
+  float: right;
+  text-align: left;
 }
