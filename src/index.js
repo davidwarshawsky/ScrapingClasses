@@ -3,10 +3,11 @@ import ReactDOM from 'react-dom';
 import './index.css';
 // import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { TextField, Button } from '@mui/material';
+import {Button } from '@mui/material';
+// import TextField from '@mui/material';
 // import { rootShouldForwardProp } from '@mui/material/styles/styled';
 // https://stackoverflow.com/questions/31758081/loading-json-data-from-local-file-into-react-js
-import valid_courses from './valid_courses.json'
+import valid_courses from './valid_SJSU_courses.json'
 
 
 // function json_file_to_dict(filename) {
@@ -48,8 +49,8 @@ class ClassSearch extends React.Component {
 
   async getCourseFromApi() {
     try {
-      const url = 'http://192.168.1.34:8080/' + this.state.subjectClicked + "/" + this.state.numberClicked + "/";
-      // const url = 'https://flask-scraping-classes-api.b6eftcit5eg44.us-west-2.cs.amazonlightsail.com/' + this.state.subject + "/" + this.state.number + "/";
+      // const url = 'http://172.17.0.2:8080/' + this.state.subjectClicked + "/" + this.state.numberClicked + "/";
+      const url = 'https://flask-scraping-classes-api.b6eftcit5eg44.us-west-2.cs.amazonlightsail.com/' + this.state.subjectClicked + "/" + this.state.numberClicked + "/";
       let response = await fetch(url);
       let responseJsonified = await response.json();
       this.setState({responseJson: responseJsonified});
@@ -123,7 +124,7 @@ class ClassSearch extends React.Component {
                 {Object.keys(valid_courses).map((key,i) => ( <option key = {i}>{key}</option>))}
               </select>
             </div>
-            <div>
+            <div id="number">
               <h2>Number</h2>
               <select id="number" onClick={this.handleNumberClicked} defaultValue="046A" value={this.state.numberClicked}>
                 {valid_courses[this.state.subjectClicked].map((number,i) => (<option key = {i}>{number}</option>))}
@@ -168,8 +169,10 @@ class ClassSearch extends React.Component {
       </div>
       </div>
       <footer>
-        <p>Author: David Warshawsky</p>
-        <p><a href="mailto:davidawarshawsky@gmail.com">davidawarshawsky@gmail.com</a></p>
+        <div id="footer">
+          <p >©2022 David Warshawsky</p>
+          <p><a href="mailto:davidawarshawsky@gmail.com">davidawarshawsky@gmail.com</a></p>
+        </div>
       </footer> 
      </div>
      </html>
@@ -177,7 +180,22 @@ class ClassSearch extends React.Component {
   }
 }
 
-// ToDo list 
+// ToDo list \
+// Make a dropdown bar for school, course, and if it transfers to SJSU, 
+// and equivalent course
+
+// class TransferableDropdown extends React.Component(){
+//   constructor(props){
+//     super(props);
+//   }
+//   render(){
+//     return (
+//       <p>Hi</p>
+      
+//     )
+//   }
+
+// }
 
 
 
