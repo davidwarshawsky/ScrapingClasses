@@ -32,12 +32,17 @@ class ClassSearch extends React.Component {
       number: "",
       subjectClicked:"CS",
       numberClicked:"046A",
+      newSubjectClicked: false,
       clicked: false,
       responseJson: [],
       rows: [],
       // valid: false,
       
     }
+  }
+
+  componentDidMount(){
+    document.title = "SJSU Transfer"
   }
   
 
@@ -51,10 +56,10 @@ class ClassSearch extends React.Component {
       console.log(this.state.responseJson);
       // console.log(typeof(this.state.responseJson));
       this.returnRows(this.state.responseJson);
-      this.setState({valid:true});
+      // this.setState({valid:true});
     }catch(error) {
       console.error(error);
-      this.setState({valid:false});
+      // this.setState({valid:false});
     }
   }
 
@@ -85,7 +90,7 @@ class ClassSearch extends React.Component {
   }
 
   handleSubjectClicked(event) {
-    this.setState({subjectClicked:event.target.value})
+    this.setState({subjectClicked:event.target.value, numberClicked: valid_courses[event.target.value][0]});
   }
   handleNumberClicked(event) {
     this.setState({numberClicked:event.target.value})
@@ -104,23 +109,28 @@ class ClassSearch extends React.Component {
     // console.log(this.state.responseJson.length);
     // console.log(this.state.rows.length);
     return (
+      <html>
+      <head>
+        <title>SJSU Transfer</title>
+      </head>
       <div>
         <h1>SJSU Transferable Classes Search</h1>
         <div className='form'>
-          <div>
-          <div>
-            <h2>Subject</h2>
-            <select id="subject" onClick={this.handleSubjectClicked} defaultValue={"CS"} value={this.state.subjectClicked}>
-            {Object.keys(valid_courses).map((key,i) => ( <option key = {i}>{key}</option>))}
-            </select>
+          <div className='selector'>
+            <div>
+              <h2>Subject</h2>
+              <select id="subject" onClick={this.handleSubjectClicked} defaultValue={"CS"} value={this.state.subjectClicked}>
+                {Object.keys(valid_courses).map((key,i) => ( <option key = {i}>{key}</option>))}
+              </select>
+            </div>
+            <div>
+              <h2>Number</h2>
+              <select id="number" onClick={this.handleNumberClicked} defaultValue="046A" value={this.state.numberClicked}>
+                {valid_courses[this.state.subjectClicked].map((number,i) => (<option key = {i}>{number}</option>))}
+              </select>
+            </div>
+            <Button variant="contained" onClick = {this.handleClick}>SUBMIT</Button>
           </div>
-          <div>
-            <h2>Number</h2>
-            <select id="number" onClick={this.handleNumberClicked} defaultValue="046A" value={this.state.numberClicked}>
-            {valid_courses[this.state.subjectClicked].map((number,i) => (<option key = {i}>{number}</option>))}
-            </select>
-          </div>
-        </div>
           {/* <TextField 
             value = {this.state.subject}
             onChange={this.handleSubjectChange}
@@ -135,7 +145,6 @@ class ClassSearch extends React.Component {
             id="outlined-basic"
             variant="outlined"        
           /> */}
-        <Button variant="contained" onClick = {this.handleClick}>SUBMIT</Button>
         </div>
           {/* valid input
               invalid input
@@ -143,6 +152,7 @@ class ClassSearch extends React.Component {
               */}
           {/* {!this.state.valid && this.state.clicked && <p>{this.state.subject} {this.state.number} is invalid</p>} */}
           {/* <p>Please enter the subject abbreviation and class number exactly. Example: BIOL 0650 , ENGL 001B</p> */}
+        <div>
         <div>
         <table>
           <thead>
@@ -156,11 +166,13 @@ class ClassSearch extends React.Component {
           </tbody>
         </table>
       </div>
+      </div>
       <footer>
         <p>Author: David Warshawsky</p>
         <p><a href="mailto:davidawarshawsky@gmail.com">davidawarshawsky@gmail.com</a></p>
       </footer> 
      </div>
+     </html>
     );
   }
 }
