@@ -12,32 +12,20 @@ title {
   border-bottom: 5px;
 }
 
-div#number{
-  margin-bottom: 20px;
+h1 {
+  text-align: center;
+  font-weight: normal;
 }
 
-
-.form {
-  padding-bottom: 12px;
-  padding-top: 12px;
-  padding-left: 12px;
-  float: left;
-}
-
-.selector {
+/* .selector {
   position: fixed;
-}
+} */
+
 table {
   border-collapse: collapse;
   width:800px;
-  margin-bottom: 10%;
-  margin-left: 10%;
-}
-
-select {
-  height: 60px;
-  width: 80px;
-  font-size: 20px;
+  margin-bottom: 25%;
+  margin-left: 0%;
 }
 
 th,
@@ -47,16 +35,6 @@ td {
   padding: 8px;
   font-size: 16px;
 }
-
-/* 
-th {
-  background-color: rgb(117, 201, 250);
-}
-
-td {
-  background-color: rgb(205, 235, 253);
-} */
-
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
@@ -85,4 +63,38 @@ p:first-child{
 p:second-child{
   float: right;
   text-align: left;
+}
+
+
+div.casestudy {
+  width:50%;
+  max-width: 500px;
+  /* margin: 1em auto; */
+  text-align: left;
+}
+
+div.casestudy span {
+  display: inline-block;
+}
+
+
+select {
+  display: inline-block;
+  width:7%;
+  text-align: right;   
+  font-size:20px;
+}
+
+input {
+  margin:.4em;
+  text-align: left;
+}
+
+div.row {
+  text-align: left;
+}
+
+div.navigation {
+  margin:1em auto;
+  padding: 2em;
 }
