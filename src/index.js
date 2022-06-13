@@ -49,8 +49,8 @@ class ClassSearch extends React.Component {
 
   async getCourseFromApi() {
     try {
-      const url = 'http://127.0.0.1:8080/' + this.state.subjectClicked + "/" + this.state.numberClicked + "/";
-      // const url = 'https://flask-scraping-classes-api.b6eftcit5eg44.us-west-2.cs.amazonlightsail.com/' + this.state.subjectClicked + "/" + this.state.numberClicked + "/";
+      // const url = 'http://127.0.0.1:8080/' + this.state.subjectClicked + "/" + this.state.numberClicked + "/";
+      const url = 'https://flask-scraping-classes-api.b6eftcit5eg44.us-west-2.cs.amazonlightsail.com/' + this.state.subjectClicked + "/" + this.state.numberClicked + "/";
       let response = await fetch(url);
       let responseJsonified = await response.json();
       this.setState({responseJson: responseJsonified});
@@ -91,10 +91,12 @@ class ClassSearch extends React.Component {
   }
 
   handleSubjectClicked(event) {
+    console.log(event.target.value);
     this.setState({subjectClicked:event.target.value, numberClicked: valid_courses[event.target.value][0]});
   }
   handleNumberClicked(event) {
-    this.setState({numberClicked:event.target.value})
+    console.log(event.target.value);
+    this.setState({numberClicked:event.target.value});
   }
 
   handleClick(){
@@ -123,8 +125,7 @@ class ClassSearch extends React.Component {
             <div className='row'>
               <h2>Subject</h2>
               <select 
-                id="subject" onClick={this.handleSubjectClicked} defaultValue={"CS"}
-                value={this.state.subjectClicked}>
+                id="subject" onClick={this.handleSubjectClicked} defaultValue={"CS"}>
                 {Object.keys(valid_courses).map((key,i) => ( <option key = {i}>{key}</option>
                 ))}
               </select>
@@ -132,33 +133,12 @@ class ClassSearch extends React.Component {
             <div className='row'>
               <h2>Number</h2>
               <select 
-                id="number" onClick={this.handleNumberClicked} defaultValue="046A" value={this.state.numberClicked}>
+                id="number" onClick={this.handleNumberClicked} defaultValue="046A">
                 {valid_courses[this.state.subjectClicked].map((number,i) => (<option key = {i}>{number}</option>))}
               </select>
             </div>
           </div>
           <div><Button variant="contained" onClick = {this.handleClick}>SUBMIT</Button></div>
-          {/* </div> */}
-          {/* <TextField 
-            value = {this.state.subject}
-            onChange={this.handleSubjectChange}
-            type = "search"
-            id="outlined-basic"
-            variant="outlined"
-          /> */}
-          {/* <TextField 
-            value = {this.state.number}
-            onChange={this.handleNumberChange} 
-            type = "search"
-            id="outlined-basic"
-            variant="outlined"        
-          /> */}
-          {/* valid input
-              invalid input
-              SHOWS UP AS INVALID UNTIL I  
-              */}
-          {/* {!this.state.valid && this.state.clicked && <p>{this.state.subject} {this.state.number} is invalid</p>} */}
-          {/* <p>Please enter the subject abbreviation and class number exactly. Example: BIOL 0650 , ENGL 001B</p> */}
           <div className='casestudy'>
             <table>
               <thead>
@@ -172,26 +152,7 @@ class ClassSearch extends React.Component {
               </tbody>
             </table>
           </div>
-      {/* <div>
-        <p>
-          This website is meant for SJSU students who would like to take courses at 
-          nearby schools or community colleges for the winter,summer, or would like to
-          save money and fulfill some of their GE requirements by taking a semester off.
-          This will help find equivalent courses so that a combination of online and in-person
-          courses that transfer to SJSU can be taken.
-        </p>
-        <p>
-          use <a href="https://www.csufullyonline.com/">csufullyonline</a>
-          to find fully online courses. This website will help you find equivalent in-person
-          and online courses at nearby community colleges or universities to fullfill GE 
-          requirements at your 4 year university.
-        </p>
-        <p>
-          Use <a href="https://assist.org/">assist.org</a> to find equivalent 
-          transfer agreements by major between schools OR which courses at your
-          community college transfers to the UC or CSU system. 
-        </p>
-      </div> */}
+      
       <footer>
         <div id="footer">
           <p >©2022 David Warshawsky</p>
