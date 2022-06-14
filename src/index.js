@@ -47,8 +47,8 @@ class ClassSearch extends React.Component {
 
   async getCourseFromApi() {
     try {
-      const url = 'http://10.251.77.168:8080/' + this.state.subject + "/" + this.state.number + "/";
-      // const url = 'https://flask-scraping-classes-api.b6eftcit5eg44.us-west-2.cs.amazonlightsail.com/' + this.state.subject + "/" + this.state.number + "/";
+      // const url = 'http://10.251.77.168:8080/' + this.state.subject + "/" + this.state.number + "/";
+      const url = 'https://flask-scraping-classes-api.b6eftcit5eg44.us-west-2.cs.amazonlightsail.com/' + this.state.subject + "/" + this.state.number + "/";
       let response = await fetch(url);
       let responseJsonified = await response.json();
       this.setState({responseJson: responseJsonified});
