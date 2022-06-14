@@ -1,9 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import "bootstrap/dist/css/bootstrap.css";
 import './index.css';
 // import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {Button } from '@mui/material';
+import {Dropdown,DropdownButton} from 'react-bootstrap/'
 // import TextField from '@mui/material';
 // import { rootShouldForwardProp } from '@mui/material/styles/styled';
 // https://stackoverflow.com/questions/31758081/loading-json-data-from-local-file-into-react-js
@@ -20,41 +22,37 @@ import valid_courses from './valid_SJSU_courses.json'
 class ClassSearch extends React.Component { 
   constructor(props){
     super(props);
-    this.handleSubjectChange = this.handleSubjectChange.bind(this);
-    this.handleNumberChange = this.handleNumberChange.bind(this);
-    this.handleSubjectClicked = this.handleSubjectClicked.bind(this);
-    this.handleNumberClicked = this.handleNumberClicked.bind(this);
+    document.title = "SJSU Transfer";
+    this.changeSubject = this.changeSubject.bind(this);
+    this.changeNumber = this.changeNumber.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.getCourseFromApi = this.getCourseFromApi.bind(this);
     this.returnRows = this.returnRows.bind(this);
-
     this.state = {
-      subject: "",
-      number: "",
-      subjectClicked:"CS",
-      numberClicked:"046A",
-      newSubjectClicked: false,
+      subject: "CS",
+      number: "046A",
       clicked: false,
       responseJson: [],
       rows: [],
-      // valid: false,
-      
+      // valid: false, 
     }
+
   }
 
+
   componentDidMount(){
-    document.title = "SJSU Transfer"
+    document.title = "SJSU Transfer";
   }
   
 
   async getCourseFromApi() {
     try {
-      // const url = 'http://127.0.0.1:8080/' + this.state.subjectClicked + "/" + this.state.numberClicked + "/";
-      const url = 'https://flask-scraping-classes-api.b6eftcit5eg44.us-west-2.cs.amazonlightsail.com/' + this.state.subjectClicked + "/" + this.state.numberClicked + "/";
+      const url = 'http://10.251.77.168:8080/' + this.state.subject + "/" + this.state.number + "/";
+      // const url = 'https://flask-scraping-classes-api.b6eftcit5eg44.us-west-2.cs.amazonlightsail.com/' + this.state.subject + "/" + this.state.number + "/";
       let response = await fetch(url);
       let responseJsonified = await response.json();
       this.setState({responseJson: responseJsonified});
-      console.log(this.state.responseJson);
+      // console.log(this.state.responseJson);
       // console.log(typeof(this.state.responseJson));
       this.returnRows(this.state.responseJson);
       // this.setState({valid:true});
@@ -65,7 +63,7 @@ class ClassSearch extends React.Component {
   }
 
   returnRows(jsonData) {
-    console.log("returnRows was called");
+    // console.log("returnRows was called");
     var rows1 = [];
     // console.log("jsonData length: " + jsonData.length);
     for (var i = 0; i < jsonData.length; i++) {
@@ -82,40 +80,34 @@ class ClassSearch extends React.Component {
     this.setState({rows: rows1});
     }
 
-  handleSubjectChange(event){
-    this.setState({subject: event.target.value});
+
+
+  changeSubject(text) {
+    this.setState({subject:text});
+    this.setState({number: valid_courses[text][0]});
+    // changeValue
+    // console.log(e.target.textContent);
+    // e.changeValue(e.textContent);
+    // this.setState({subject:e.target.value, number:valid_courses[e.target.value]});
   }
 
-  handleNumberChange(event){
-    this.setState({number: event.target.value});
-  }
-
-  handleSubjectClicked(event) {
-    console.log(event.target.value);
-    this.setState({subjectClicked:event.target.value, numberClicked: valid_courses[event.target.value][0]});
-  }
-  handleNumberClicked(event) {
-    console.log(event.target.value);
-    this.setState({numberClicked:event.target.value});
+  changeNumber(text) {
+    this.setState({number:text});
+    // this.setState({number: e.target.value});
   }
 
   handleClick(){
-    // this.setState({clicked: true});
+    this.setState({clicked: true});
     this.getCourseFromApi();
     this.returnRows(this.state.responseJson);
     this.setState({clicked:true});
 
   }
 
-
   render() {
     // console.log(this.state.responseJson.length);
     // console.log(this.state.rows.length);
     return (
-      <html>
-        <head>
-          <title>SJSU Transfer</title>
-        </head>
         <div>
           <div>
             <h1>SJSU Transferable Classes Search</h1>
@@ -124,18 +116,22 @@ class ClassSearch extends React.Component {
           {/* <div className='selector'> */}
             <div className='row'>
               <h2>Subject</h2>
-              <select 
-                id="subject" onClick={this.handleSubjectClicked} defaultValue={"CS"}>
+              {/* <select 
+                id="subject" onClick={this.handleSubjectClicked} defaultValue="AFAM">
                 {Object.keys(valid_courses).map((key,i) => ( <option key = {i}>{key}</option>
                 ))}
-              </select>
+              </select> */}
+              <DropdownButton id="dropdown-item-button" title={this.state.subject}>
+                {Object.keys(valid_courses).map((key,_i) => ( <Dropdown.Item as="button"
+                onClick={(e) => this.changeSubject(e.target.textContent)}>{key}</Dropdown.Item>))}
+              </DropdownButton>
             </div>
             <div className='row'>
               <h2>Number</h2>
-              <select 
-                id="number" onClick={this.handleNumberClicked} defaultValue="046A">
-                {valid_courses[this.state.subjectClicked].map((number,i) => (<option key = {i}>{number}</option>))}
-              </select>
+              <DropdownButton id="dropdown-item-button" title={this.state.number}>
+                {valid_courses[this.state.subject].map((key,_i) => ( <Dropdown.Item as="button"
+                onClick={(e) => this.changeNumber(e.target.textContent)}>{key}</Dropdown.Item>))}
+              </DropdownButton>
             </div>
           </div>
           <div><Button variant="contained" onClick = {this.handleClick}>SUBMIT</Button></div>
@@ -153,14 +149,13 @@ class ClassSearch extends React.Component {
             </table>
           </div>
       
-      <footer>
-        <div id="footer">
-          <p >©2022 David Warshawsky</p>
-          <p><a href="mailto:davidawarshawsky@gmail.com">davidawarshawsky@gmail.com</a></p>
-        </div>
-      </footer> 
-     </div>
-     </html>
+        <footer>
+          <div id="footer">
+            <p >©2022 David Warshawsky</p>
+            <p><a href="mailto:davidawarshawsky@gmail.com">davidawarshawsky@gmail.com</a></p>
+          </div>
+        </footer> 
+      </div>
     );
   }
 }
